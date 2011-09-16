@@ -42,7 +42,8 @@ Gem::Specification.new do |s|
     "spec/tabl/deref_column_spec.rb",
     "spec/tabl/dsl_spec.rb",
     "spec/tabl/formats/html_spec.rb",
-    "spec/tabl/table_spec.rb"
+    "spec/tabl/table_spec.rb",
+    "tabl.gemspec"
   ]
   s.homepage = %q{http://github.com/liehann/tabl}
   s.licenses = [%q{MIT}]
