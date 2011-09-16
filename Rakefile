@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "tabl"
   gem.homepage = "http://github.com/liehann/tabl"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Gem for creating tables in Rails or any other system.}
+  gem.description = %Q{Gem for creating tables in Rails or any other system.}
   gem.email = "liehannl@gmail.com"
   gem.authors = ["Liehann Loots"]
   # dependencies defined in Gemfile
@@ -31,19 +31,3 @@ RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.pattern = FileList['spec/**/*_spec.rb']
 end
 
-RSpec::Core::RakeTask.new(:rcov) do |spec|
-  spec.pattern = 'spec/**/*_spec.rb'
-  spec.rcov = true
-end
-
-task :default => :spec
-
-require 'rake/rdoctask'
-Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
-
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "tabl #{version}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
