@@ -11,6 +11,11 @@ describe Tabl::DerefColumn do
     @deref_column.value(@bar).should == 'foo'
   end
 
+  it 'it should dereference the object when formatting' do
+    @column.format.html = lambda { |value, record| record.foo.upcase }
+    @deref_column.format.html('foo', @bar).should == 'FOO'
+  end
+
   it 'should delegate the label' do
     @column.label = 'FOO'
     @deref_column.label.should == 'FOO'

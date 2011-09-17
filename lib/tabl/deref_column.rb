@@ -6,10 +6,20 @@ module Tabl
       @column = column
       @callback = deref
       @callback = lambda { |record| record.send(deref) } if Symbol === deref
+      @format_dsl = Column::FormatDsl.new(self)
     end
 
     def value(record)
-      super(deref(record))
+      @column.value(deref(record))
+    end
+
+    def format(format = nil, value = nil, record = nil)
+      if format.nil?
+        @format_dsl
+      else
+        record = deref(record) if record
+        @column.format(format, value, record)
+      end
     end
 
     def deref(record)

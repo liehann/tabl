@@ -47,6 +47,13 @@ describe Tabl::Table do
     foo = OpenStruct.new(:foo => OpenStruct.new(:bar => 'bar'))
     table.values(foo).should == ['bar']
   end
+
+  it 'should format dereferenced columns' do
+    foo_column = Tabl::DerefColumn.new(Tabl::Column.new(:foo), :bar)
+    table = Tabl::Table.new(:base_columns => [foo_column], :columns => [:foo])
+    bar = OpenStruct.new(:bar => OpenStruct.new(:foo => 'foo'))
+    table.html.values(bar).should == ['foo']
+  end
 end
 
 

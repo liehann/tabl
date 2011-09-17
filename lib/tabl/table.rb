@@ -89,7 +89,7 @@ module Tabl
           if value
             format(key, value, record)
           else
-            @base.default_value unless value
+            @base.default_value
           end
         end
       end
@@ -97,8 +97,8 @@ module Tabl
       def format(key, value, record)
         column = @table.column(key)
 
-        if column.format[@name]
-          column.format.read(@name, value, record)
+        if column.formats[@name]
+          column.format(@name, value, record)
         else
           @base.format(value)
         end

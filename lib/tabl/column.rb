@@ -3,12 +3,15 @@ module Tabl
     attr_reader :name
     attr_accessor :label
     attr_writer :value
+    attr_reader :formats
 
     def initialize(name, args = {})
       @name = name
       @label = args[:label] || @name.to_s.titleize
       @value = args[:value] || lambda { |record| record.send(@name) }
-      @formats = Formats.new
+      @formats = {}
+      @format_dsl = FormatDsl.new(self)
+
       yield self if block_given?
     end
 
@@ -16,17 +19,23 @@ module Tabl
       @value.call(record)
     end
 
-    def format(name = nil)
-      @formats
+    def format(key = nil, value = nil, record = nil)
+      if key.nil?
+        return @format_dsl
+      else
+        format = @formats[key]
+        return format unless value
+        if (format.arity == 1)
+          return format.call(value)
+        else
+          return format.call(value, record)
+        end
+      end
     end
 
-    class Formats
-      def initialize
-        @formats = {}
-      end
-
-      def [](name)
-        @formats[name]
+    class FormatDsl
+      def initialize(column)
+        @column = column
       end
 
       def method_missing(name, *args)
@@ -34,26 +43,10 @@ module Tabl
         assign = (name =~ /=$/)
         key = name.gsub(/=$/, '').to_sym
 
-        # super unless Tabl.formats.include?(key)
-
         if (assign)
-          write(key, *args)
+          @column.formats[key] = *args
         else
-          read(key, *args)
-        end
-      end
-
-      def write(key, proc)
-        @formats[key] = proc
-      end
-
-      def read(key, value = nil, record = nil)
-        format = @formats[key]
-        return format unless value
-        if (format.arity == 1)
-          return format.call(value)
-        else
-          return format.call(value, record)
+          @column.format(key, *args)
         end
       end
     end
