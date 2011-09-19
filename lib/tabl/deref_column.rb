@@ -13,12 +13,12 @@ module Tabl
       @column.value(deref(record))
     end
 
-    def format(format = nil, value = nil, record = nil)
+    def format(format = nil, value = nil, record = nil, context = nil)
       if format.nil?
         @format_dsl
       else
         record = deref(record) if record
-        @column.format(format, value, record)
+        @column.format(format, value, record, context)
       end
     end
 

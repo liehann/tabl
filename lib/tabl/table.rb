@@ -83,22 +83,22 @@ module Tabl
         @base = base
       end
 
-      def values(record)
+      def values(record, context = nil)
         @table.keys.map do |key|
           value = @table.value(key, record)
           if value
-            format(key, value, record)
+            format(key, value, record, context)
           else
             @base.default_value
           end
         end
       end
 
-      def format(key, value, record)
+      def format(key, value, record, context)
         column = @table.column(key)
 
         if column.formats[@name]
-          column.format(@name, value, record)
+          column.format(@name, value, record, context)
         else
           @base.format(value)
         end

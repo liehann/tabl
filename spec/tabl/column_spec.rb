@@ -45,5 +45,13 @@ describe Tabl::Column do
     column.value(foo).should == 'bar'
     column.format.html('bar').should == 'BAR'
   end
+
+  it 'should evaluate format with a context' do
+    foo = OpenStruct.new(:foo => 'foo')
+    column = Tabl::Column.new(:foo)
+    context = LinkHelper.new
+    column.format.html = lambda { |v, foo| link_to 'foo', v }
+    column.format.html('foo', foo, context).should == LinkHelper.link_to('foo', 'foo')
+  end
 end
 

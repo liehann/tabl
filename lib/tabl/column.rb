@@ -19,16 +19,24 @@ module Tabl
       @value.call(record)
     end
 
-    def format(key = nil, value = nil, record = nil)
+    def format(key = nil, value = nil, record = nil, context = nil)
       if key.nil?
         return @format_dsl
       else
         format = @formats[key]
         return format unless value
-        if (format.arity == 1)
-          return format.call(value)
+        if (context)
+          if (format.arity == 1)
+            context.instance_exec(value, &format)
+          else
+            context.instance_exec(value, record, &format)
+          end
         else
-          return format.call(value, record)
+          if (format.arity == 1)
+            return format.call(value)
+          else
+            return format.call(value, record)
+          end
         end
       end
     end
